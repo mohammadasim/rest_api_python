@@ -28,3 +28,25 @@ def decorated_function():
     print("Hello world!")
 
 decorated_function()
+
+'''
+Complex decorators are when they contain parameters of arguments as shown below
+'''
+def decorator_with_argument(number):
+    def my_decorator(func):
+        @functools.wraps(func)
+        def decorator_that_runs_func():
+            print("Inside the decorator")
+            if number == 56:
+                print("not running function")
+            else:
+                func()
+            print("After the decorator")
+        return decorator_that_runs_func
+    return my_decorator
+
+@decorator_with_argument(69)
+def hello_world():
+    print("Hellooooo World")
+
+hello_world()
