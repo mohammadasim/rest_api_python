@@ -22,6 +22,14 @@ class WorkingStudent(Student):
         self.salary = salary
         self.job_title = job_title
 
+'''
+The following is another way of writing a constructor in the subclass.  This is how it works in Python 2
+
+    def __init__(self, name, school, salary, job_title):
+        Student.__init__(self, name, school)
+        self.salary = salary
+        self.job_title = job_title
+'''
 anna = WorkingStudent("Anna", "Oxford", 200.00, "Devops")
 
 #print(anna.marks)
