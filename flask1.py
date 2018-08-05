@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request, render_template
 
 '''
 __name__ gives name of the file.
-Jasonify is a method in flask that converts data into json and thus can easily be sent across
+Jsonify is a method in flask that converts data into json and thus can easily be sent across
 request is used for getting data out that was received from the browser
 '''
 
@@ -39,15 +39,15 @@ def create_store():
         'items': []
     }
     stores.append(new_store)
-    return jasonify(new_store)
+    return jsonify(new_store)
 
 @app.route('/store/<string:name>')
 def get_store(name):
     for store in stores:
-        if store['name'] == name
-        return jasonify(store)
+        if store['name'] == name:
+            return jsonify(store)
         else:
-            return jasonify({'message': 'Store not found'})
+            return jsonify({'message': 'Store not found'})
 
 
 @app.route('/store')
@@ -64,9 +64,9 @@ def create_item_in_store(name):
                 'price': received_request['price']
             }
             store['items'].append(new_item)
-            return jasonify({'items': store['items']})
+            return jsonify({'items': store['items']})
         else:
-            return jasonify({'message': "Couldn't locate the store"})
+            return jsonify({'message': "Couldn't locate the store"})
 
 @app.route('/store/<string:name>/item')
 def get_item_in_store(name):
@@ -74,7 +74,7 @@ def get_item_in_store(name):
         if store['name'] == name:
             return jsonify({'items': store['items']})
         else:
-            return jasonify({'message': 'Items not found'})
+            return jsonify({'message': 'Items not found'})
 
 
 app.run(port=5000)
