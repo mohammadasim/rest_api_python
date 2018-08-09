@@ -13,12 +13,19 @@ items = []
 
 class Item(Resource):
     def get(self, name):
-        for item in items:
-            if item['name'] == name:
-                return item
-        return {'item': None}, 404
+        '''
+        The filter functions takes two parameters, a lambda function and an iterable which is 
+        the list item. Filter will filter all those objects for which the function in this case
+        the lambda function will return true.
+        The filter will return a list and we can then call the builtin next() to get the next item
+        next() will throw exception if there isn't another item, hence we use a default value none
+        '''
+        item = next(filter(lambda x: x['name'] == name, items), None)
+        return {'item': item}, 200 if item is not None else 404
 
     def post(self, name):
+        if next(filter(lambda x: x['name'] == name, items), None):
+            return {'message': 'An item with name '{}' already exists.'.format(name)}, 400
         data = request.get_json()
         item = {'name': name, 'price': data['price']}
         items.append(item)
