@@ -30,6 +30,12 @@ class Item(Resource):
     '''
     Item resource
     '''
+    parser = reqparse.RequestParser() #This initializes a new parser that we can use to parse a request.
+    parser.add_argument('price',
+        type=float,
+        required=True,
+        help="This field cannot be left blank") # Here we add arguments to the parser. We will then run the request through the parser and it will look for the argument added to the parser. 
+
     @jwt_required()
     def get(self, name):
         '''
@@ -41,14 +47,14 @@ class Item(Resource):
         '''
         item = next(filter(lambda x: x['name'] == name, items), None)
         return {'item': item}, 200 if item is not None else 404
-
+    @jwt_required()
     def post(self, name):
         '''
         Creates item
         '''
         if next(filter(lambda x: x['name'] == name, items), None):
             return {'message': 'An item with name {} already exists.'.format(name)}, 400
-        data = request.get_json()
+        data = Item.parser.parse_args()
         item = {'name': name, 'price': data['price']}
         items.append(item)
         return item, 201
@@ -69,13 +75,7 @@ class Item(Resource):
         We have added requestparse it will parse through the payload and only collect the arguments that
         we have defined. This gives us more control over the updating of elements.
         '''
-        parser = reqparse.RequestParser() #This initializes a new parser that we can use to parse a request.
-        parser.add_argument('price',
-            type=float,
-            required=True,
-            help="This field cannot be left blank") # Here we add arguments to the parser. We will then run the request through the parser and it will look for the argument added to the parser. 
-
-        data = parser.parse_args()
+        data = Item.parser.parse_args()
         item = next(filter(lambda x : x['name'] == name, items), None)
         if item is None:
             item = {'name': name, 'price': data['price']}
