@@ -60,6 +60,21 @@ class Item(Resource):
         items = list(filter(lambda x: x['name'] != name, items))
         return {'message': 'Item deleted'}
 
+    def put(self, name):
+        '''
+        This method updates an item if it already exists otherwise it will create it.
+        the update() method is dictionary method that updates the values with the values in data
+        '''
+        data = request.get_json()
+        item = next(filter(lambda x : x['name'] == name, items), None)
+        if item is None:
+            item = {'name': name, 'price': data['price']}
+            items.append(item)
+        else:
+            item.update(data)
+        return item
+
+
 class ItemList(Resource):
     '''
     Items resources, list of all items
