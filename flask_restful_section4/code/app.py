@@ -1,5 +1,5 @@
 from flask import Flask, request
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse
 from flask_jwt import JWT, jwt_required
 from security import authenticate, identity
 '''
@@ -7,6 +7,7 @@ The Api works with a resource and every resource needs to be a class
 The class needs to inherit from Resource class. Once the class is defined 
 it is added to the api as a resource
 Important point is that in Flask Restful we don't have to use jsonify as that is done for us.
+reqparse is a library that allows us to parse through the json payload received.
 '''
 
 app = Flask(__name__)
@@ -60,12 +61,21 @@ class Item(Resource):
         items = list(filter(lambda x: x['name'] != name, items))
         return {'message': 'Item deleted'}
 
+    @jwt_required()
     def put(self, name):
         '''
         This method updates an item if it already exists otherwise it will create it.
         the update() method is dictionary method that updates the values with the values in data
+        We have added requestparse it will parse through the payload and only collect the arguments that
+        we have defined. This gives us more control over the updating of elements.
         '''
-        data = request.get_json()
+        parser = reqparse.RequestParser() #This initializes a new parser that we can use to parse a request.
+        parser.add_argument('price',
+            type=float,
+            required=True,
+            help="This field cannot be left blank") # Here we add arguments to the parser. We will then run the request through the parser and it will look for the argument added to the parser. 
+
+        data = parser.parse_args()
         item = next(filter(lambda x : x['name'] == name, items), None)
         if item is None:
             item = {'name': name, 'price': data['price']}
