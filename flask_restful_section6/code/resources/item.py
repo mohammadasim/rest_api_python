@@ -66,7 +66,7 @@ class Item(Resource):
         '''
         item_exists = ItemModel.find_by_name(name)
         data = Item.parser.parse_args()
-        updated_item = ItemModel(name, data['price')
+        updated_item = ItemModel(name, data['price'])
         if item_exists:
             try:
                 updated_item.update_item()
