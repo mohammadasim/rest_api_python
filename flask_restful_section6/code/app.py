@@ -1,9 +1,10 @@
-from user import UserRegister
+from resources.user import UserRegister
 from flask import Flask
 from flask_restful import Api
-from flask_jwt import JWT
+from flask_jwt import JWT, jwt_required
 from security import authenticate, identity
-from item import Item, ItemList
+from resources.item import Item, ItemList
+import datetime
 '''
 The Api works with a resource and every resource needs to be a class
 The class needs to inherit from Resource class. Once the class is defined 
@@ -29,7 +30,7 @@ and the username and password matches it allows the function to takes place.
 jwt = JWT(app, authenticate, identity) # /auth
 
 #Config JWT to expire within half an hour
-app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=1800)
+app.config['JWT_EXPIRATION_DELTA'] = datetime.timedelta(seconds=1800)
 
 
 api.add_resource(Item, '/item/<string:name>')
