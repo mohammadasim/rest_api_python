@@ -10,6 +10,12 @@ class ItemModel(db.Model):
     '''
     With the inclusion of db.Model we are telling SQLAlchemy that this is model object that it has to map
     '''
+    __tablename__ = "items"
+    id = db.column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80))
+    price = db.Column(db.Float(precision=2))
+
+
     def __init__(self, name, price):
             self.name = name
             self.price = price

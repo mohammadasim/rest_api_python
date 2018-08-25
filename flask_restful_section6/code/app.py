@@ -14,6 +14,11 @@ reqparse is a library that allows us to parse through the json payload received.
 '''
 
 app = Flask(__name__)
+'''
+Here we are turning off the Flask sqlalchemy tracker, but sqlalchemy itself has another tracker in the
+main library and that one is better and which is on.
+'''
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'jose'
 api = Api(app)
 '''
