@@ -37,4 +37,11 @@ api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
 api.add_resource(UserRegister, '/register')
 if __name__ == '__main__':
+    '''
+    The reason that we are importing db here is to avoid circular imports.
+    our object models will also import db and we import up there our object models too and
+    then db will alreadby be ther if we had imported it there.
+    '''
+    from db import db
+    db.init_app(app)
     app.run(port=5000, debug=True)

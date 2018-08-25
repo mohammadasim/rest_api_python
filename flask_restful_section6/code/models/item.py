@@ -4,8 +4,12 @@ the endpoints interact with them directly they should have only GET, PUT, POST, 
 Models are back end classes that are more like helper classes and are not visible through the API
 '''
 import sqlite3
+from db import db
 
-class ItemModel():
+class ItemModel(db.Model):
+    '''
+    With the inclusion of db.Model we are telling SQLAlchemy that this is model object that it has to map
+    '''
     def __init__(self, name, price):
             self.name = name
             self.price = price
