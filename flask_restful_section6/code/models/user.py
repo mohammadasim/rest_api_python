@@ -1,6 +1,15 @@
 import sqlite3
 from db import db
 class UserModel(db.Model):
+    '''
+    Below we are telling SQLAlchemy the table it has to use and the columns.
+    '''
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80))
+    password = db.Column(db.String(80))
+
     def __init__(self, _id, username, password):
         '''
         We are using _id instead of id as id is a python key word
