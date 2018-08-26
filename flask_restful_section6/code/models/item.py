@@ -28,33 +28,27 @@ class ItemModel(db.Model):
     
     @classmethod
     def find_by_name(cls, name):
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-        query = "SELECT * FROM items WHERE name=?"
-        result = cursor.execute(query, (name,))
-        row = result.fetchone()
-        connection.close()
-        if row:
-            return cls(*row)
+        '''
+        We are now going to use sqlalchemy.
+        The query object below if part of sqlalchemy and sqlalchemy will return an object to us.
+        this library has helped us in getting rid of all the boilerplate code
+        '''
+        return cls.query.filter_by(name=name) #This is equal to Select * from items where name=name
 
-    def insert_item(self):
+    def save_to_db(self):
         '''
-        class method for inserting item to database
+        session is an object that we use to add object to database.  We can add multiple objects to session
+        and they will get added.
+        When we are updating an item we add the updated item to session and that will then be committed. Hence
+        there is no need for update method and we change the name of the method because it is not only inserting object
+        but updating as well.
         '''
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-        create_item_query = "INSERT INTO items VALUES(?,?)"
-        cursor.execute(create_item_query, (self.name, self.price))
-        connection.commit()
-        connection.close()
+        db.session.add(self)
+        db.session.commit()
     
-    def update_item(self):
+    def delete_from_db(self):
         '''
-        Updates an existing item
+        Deletes an existing item from db
         '''
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-        update_query = "UPDATE items SET price=? WHERE name=?"
-        cursor.execute(update_query, (self.price, self.name))
-        connection.commit()
-        connection.close()
+        db.session.delete(self)
+        db.session.commit()
