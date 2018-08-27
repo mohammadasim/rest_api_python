@@ -11,7 +11,7 @@ class ItemModel(db.Model):
     With the inclusion of db.Model we are telling SQLAlchemy that this is model object that it has to map
     '''
     __tablename__ = "items"
-    id = db.column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
     price = db.Column(db.Float(precision=2))
 
@@ -33,7 +33,7 @@ class ItemModel(db.Model):
         The query object below if part of sqlalchemy and sqlalchemy will return an object to us.
         this library has helped us in getting rid of all the boilerplate code
         '''
-        return cls.query.filter_by(name=name) #This is equal to Select * from items where name=name
+        return cls.query.filter_by(name=name).first() #This is equal to Select * from items where name=name
 
     def save_to_db(self):
         '''
