@@ -1,31 +1,22 @@
-'''
-We have moved some class methods from the item resource to this file. The reason being that a resource should have methods that 
-the endpoints interact with them directly they should have only GET, PUT, POST, DELETE methods and not class methods.
-Models are back end classes that are more like helper classes and are not visible through the API
-'''
-
 from db import db
 
-class ItemModel(db.Model):
+class StoreModel(db.Model):
     '''
     With the inclusion of db.Model we are telling SQLAlchemy that this is model object that it has to map
     '''
-    __tablename__ = "items"
+    __tablename__ = "stores"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
-    price = db.Column(db.Float(precision=2))
-    store_id = db.Column(db.Integer, foreign_key=True)
 
 
-    def __init__(self, name, price):
+    def __init__(self, name):
             self.name = name
-            self.price = price
 
     def json(self):
         '''
-        Json representation of ItemModel
+        Json representation of StoreModel
         '''
-        return {'name': self.name, 'price': self.price}
+        return {'name': self.name, 'items': self.items}
     
     @classmethod
     def find_by_name(cls, name):
