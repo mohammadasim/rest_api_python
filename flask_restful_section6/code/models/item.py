@@ -3,7 +3,7 @@ We have moved some class methods from the item resource to this file. The reason
 the endpoints interact with them directly they should have only GET, PUT, POST, DELETE methods and not class methods.
 Models are back end classes that are more like helper classes and are not visible through the API
 '''
-import sqlite3
+
 from db import db
 
 class ItemModel(db.Model):

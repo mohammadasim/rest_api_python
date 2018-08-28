@@ -23,6 +23,15 @@ app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'jose'
 api = Api(app)
+
+@app.before_first_request
+
+# This method will run first and create all the tables in data.db if they don't exist already
+
+def create_tables():
+    db.create_all()
+
+
 '''
 JWT is a library that is used for authentication. It gives us a default endpoint /auth.
 with /auth we send username and password. JWT returns us an authorization token.

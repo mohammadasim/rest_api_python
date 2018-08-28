@@ -1,7 +1,6 @@
 '''
 Item resource
 '''
-import sqlite3
 from flask_restful import Resource, reqparse
 from flask_jwt import jwt_required
 from models.item import ItemModel
@@ -63,20 +62,14 @@ class Item(Resource):
         We have added requestparse it will parse through the payload and only collect the arguments that
         we have defined. This gives us more control over the updating of elements.
         '''
-        item_exists = ItemModel.find_by_name(name)
+        item = ItemModel.find_by_name(name)
         data = Item.parser.parse_args()
-        updated_item = ItemModel(name, data['price'])
-        if item_exists:
-            try:
-                updated_item.update_item()
-            except:
-                {'message': 'An error occured while updating item in database'}, 500
+        if item:
+            item.price = data['price']
         else:
-            try:
-                updated_item.insert_item()
-            except:
-                return {'message': 'An error occured while inserting the item to database'}, 500
-        return updated_item.json()
+            item = ItemModel(name, data['price'])
+        item.save_to_db()
+        return item.json()
 
 
 class ItemList(Resource):
@@ -87,10 +80,4 @@ class ItemList(Resource):
         '''
         get list of items.
         '''
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-        query = "SELECT * FROM items"
-        row = cursor.execute(query)
-        data = row.fetchall()
-        connection.close()
-        return {'item': data}
+        return {'items': [item.json() for item in ItemModel.query.all()]}
