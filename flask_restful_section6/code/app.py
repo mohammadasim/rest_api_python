@@ -19,7 +19,7 @@ Here we are turning off the Flask sqlalchemy tracker, but sqlalchemy itself has 
 main library and that one is better and which is on.
 In the following config we are telling sqlalchemy where the db file will be located.
 '''
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///data.db'
+app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:myPassword@localhost'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'jose'
 api = Api(app)
