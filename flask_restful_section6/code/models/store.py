@@ -7,6 +7,7 @@ class StoreModel(db.Model):
     __tablename__ = "stores"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
+    items = db.relationship('ItemModel') # This is to highlight the relatioship between the two databases
 
 
     def __init__(self, name):
@@ -16,7 +17,7 @@ class StoreModel(db.Model):
         '''
         Json representation of StoreModel
         '''
-        return {'name': self.name, 'items': self.items}
+        return {'name': self.name, 'items': [item.json() for item in self.items]}
     
     @classmethod
     def find_by_name(cls, name):
