@@ -17,6 +17,11 @@ class Item(Resource):
         #Here we add arguments to the parser. We will then run the request through the parser and it will look for the argument added to the parser. 
         help="This field cannot be left blank")
 
+    parser.add_argument('store_id',
+        type=int,
+        required=True,
+        #Here we add arguments to the parser. We will then run the request through the parser and it will look for the argument added to the parser. 
+        help="Every item needs a store_id")
     @jwt_required()
     def get(self, name):
         '''
@@ -36,7 +41,7 @@ class Item(Resource):
             return {'message': "An Item by name '{}' already exists".format(name)}, 400
         else:
             data = Item.parser.parse_args()
-            item = ItemModel(name, data['price'])
+            item = ItemModel(name, data['price'], data['store_id'])
             try:
                 item.save_to_db()
             except:
@@ -66,8 +71,9 @@ class Item(Resource):
         data = Item.parser.parse_args()
         if item:
             item.price = data['price']
+            item.store_id = data['store_id']
         else:
-            item = ItemModel(name, data['price'])
+            item = ItemModel(name, data['price'], data['store_id'])
         item.save_to_db()
         return item.json()
 
