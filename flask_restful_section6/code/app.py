@@ -4,6 +4,7 @@ from flask_restful import Api
 from flask_jwt import JWT, jwt_required
 from security import authenticate, identity
 from resources.item import Item, ItemList
+from resources.store import Store, StoreList
 import datetime
 '''
 The Api works with a resource and every resource needs to be a class
@@ -51,6 +52,8 @@ app.config['JWT_EXPIRATION_DELTA'] = datetime.timedelta(seconds=1800)
 
 api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
+api.add_resource(Store, '/store/<string:name>')
+api.add_resource(StoreList, '/stores')
 api.add_resource(UserRegister, '/register')
 if __name__ == '__main__':
     '''
