@@ -47,4 +47,7 @@ class Store(Resource):
 class StoreList(Resource):
     @jwt_required
     def get(self):
+        print('Inside the function and it has been called')
+        for store in StoreModel:
+            print(store)
         return {'stores':[store.json() for store in StoreModel.query.all()]}
