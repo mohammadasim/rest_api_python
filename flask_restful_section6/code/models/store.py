@@ -8,7 +8,8 @@ class StoreModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
     items = db.relationship('ItemModel', lazy='dynamic') # This is to highlight the relatioship between the two databases
-
+    area_id = db.Column(db.Integer, db.ForeignKey('area.id'))
+    area = db.relationship('AreaModel')
 
     def __init__(self, name):
             self.name = name

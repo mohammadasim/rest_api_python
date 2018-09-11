@@ -2,7 +2,7 @@ from resources.user import UserRegister
 from flask import Flask
 from flask_restful import Api
 from flask_jwt import JWT, jwt_required
-from security import authenticate, identity
+from security import authenticate, identityfrom resources.area import Area, AreaList
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
 import datetime
@@ -55,6 +55,8 @@ api.add_resource(ItemList, '/items')
 api.add_resource(Store, '/store/<string:name>')
 api.add_resource(StoreList, '/stores')
 api.add_resource(UserRegister, '/register')
+api.add_resource(Area, '/area/<string:name>')
+api.add_resource(AreaList, '/areas')
 if __name__ == '__main__':
     '''
     The reason that we are importing db here is to avoid circular imports.
